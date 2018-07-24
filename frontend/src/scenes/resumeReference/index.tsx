@@ -1,19 +1,19 @@
 import * as React from 'react';
-import TargetPosition from './components/targetPosition';
+import ReferenceItem from './components/referenceItem';
 import {style} from './index.css.js';
 
 // interface resumeInputProps {
 //   resume: string
 // }
 
-class ResumeInput extends React.Component {
+class ReferenceList extends React.Component {
   public render() {
     return (
       <div style={style}>
-        <TargetPosition />
+        <ReferenceItem data={{}}/>
       </div>
     )
   }
 }
 
-export default ResumeInput;
+export default ReferenceList;
