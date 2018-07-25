@@ -2,15 +2,11 @@ import { FormControl, Input, InputAdornment, InputLabel } from '@material-ui/cor
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import * as React from 'react';
 
-// interface resumeInputProps {
-//   resume: string
-// }
+interface IResumeInputProps {
+  onInput: (event : React.FocusEvent<HTMLDivElement> | React.FocusEvent<HTMLInputElement>) => void
+}
 
-class TargetPosition extends React.Component {
-
-  public targetPositionInput() {
-    console.log('blurred')
-  }
+class TargetPosition extends React.Component<IResumeInputProps> {
 
   public render() {
     return (
@@ -24,7 +20,7 @@ class TargetPosition extends React.Component {
                 <AccountCircle />
               </InputAdornment>
             }
-            onBlur={this.targetPositionInput}
+            onBlur={this.props.onInput}
           />
         </FormControl>
       </div>

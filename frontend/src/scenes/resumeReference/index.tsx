@@ -6,7 +6,7 @@ import {style} from './index.css.js';
 //   resume: string
 // }
 
-class ReferenceList extends React.Component {
+class ReferenceList extends React.Component<{},{}> {
   public render() {
     return (
       <div style={style}>

@@ -10,9 +10,7 @@ interface IProps {
 }
 
 class ReferenceItem extends React.Component<IProps> {
-// function SimpleCard(props) {
-  // const { classes } = props;
-  // const bull = <span className={classes.bullet}>•</span>;
+
   public render() {
     const styles = {
       bullet: {

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as React from 'react';
 import './App.css';
 
@@ -10,7 +11,25 @@ import ResumeInput from './scenes/resumeInput';
 import ReferenceList from './scenes/resumeReference';
 // import Typography from '@material-ui/core/Typography';
 
-class App extends React.Component {
+interface IMainState {
+  data: {}
+}
+
+class App extends React.Component<{}, IMainState> {
+
+  public handleTargetPosition(event: React.FocusEvent<HTMLInputElement>) { // this is the function being passed into the child
+    console.log(event.currentTarget.value)
+    axios.get('/api/getResumeReference', {
+      params: {
+        targetPosition: event.currentTarget.value
+      }
+    }).then(res => {
+      console.log(res)
+      // const persons = res.data;
+      // this.setState({ persons });
+    })
+  }
+
   public render() {
     const style = {
       appBar: {
@@ -35,7 +54,7 @@ class App extends React.Component {
         </AppBar>
         <div style={style.contentPage}>
           <ReferenceList />
-          <ResumeInput />
+          <ResumeInput onTargetPositionInput={this.handleTargetPosition}/>
         </div>
       </div>
     );

@@ -2,15 +2,16 @@ import * as React from 'react';
 import TargetPosition from './components/targetPosition';
 import {style} from './index.css.js';
 
-// interface resumeInputProps {
-//   resume: string
-// }
+interface IResumeInputProps {
+  onTargetPositionInput: (event : React.FocusEvent<HTMLDivElement> | React.FocusEvent<HTMLInputElement>) => void
+}
 
-class ResumeInput extends React.Component {
+class ResumeInput extends React.Component<IResumeInputProps> {
+
   public render() {
     return (
       <div style={style}>
-        <TargetPosition />
+        <TargetPosition onInput={this.props.onTargetPositionInput}/>
       </div>
     )
   }

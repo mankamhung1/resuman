@@ -3,9 +3,10 @@ var bodyParser = require('body-parser')
 var axios = require('axios')
 
 var app = express();
+const port = process.env.PORT || 5000;
 
-app.get('/', function(req, res) {
-  console.log('homepage called')
+app.get('/api/getResumeReference', function(req, res) {
+  console.log('Requested resume reference for : ' + req.query.targetPosition)
   axios({
     method: 'get',
     // url: 'https://auth.indeed.com/resumes/ade44b43fbe56759',
@@ -13,7 +14,7 @@ app.get('/', function(req, res) {
     params: {
       client_id: 'd3a33591dad1256ed38351d7d3c14072e5d06a2e2c827b51f00e7224101a3b5a',
       v: 1,
-      q: 'title:(Web+developer)',
+      q: 'title:('+ req.query.targetPosition +')',
       l: ''
     }
     // },
@@ -21,14 +22,15 @@ app.get('/', function(req, res) {
   }).then(
     (response) => {
       //handle success
-      console.log(response.data);
+      console.log(response.data)
+      res.header("Access-Control-Allow-Origin", "*");
       res.send(response.data)
     },
     (error) => {
       resp = JSON.stringify(error.response.data)
       res.send(resp);
     }
-  ) ;
+  );
     // res.send('fukkk') 
     //getUser()
 });
@@ -80,4 +82,4 @@ client.query('SELECT * FROM restaurants', function(err, results) {
   console.log(results.rows);
 })
 
-app.listen(8081);
+app.listen(port);
