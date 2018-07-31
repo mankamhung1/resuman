@@ -47,17 +47,42 @@ class Skills extends React.Component<ISkillsInputProps, ISkillsInputState> {
         </FormControl>
       </div>
 
-    let skillRef = ''
-      for (const resume of this.props.resumeReferences) {
-        if (resume.skillsList.length > 0) {
-          for (const skill of resume.skillsList) {
-            skillRef = skillRef + skill.text
-          }
+    // create an array containing all the skills in all skillslist in all resumes references, and make it lowercased
+    const skillRef = []
+    for (const resume of this.props.resumeReferences) {
+      if (resume.skillsList.length > 0) {
+        for (const skill of resume.skillsList) {
+          skillRef.push(skill.text.toLowerCase())
         }
       }
+    }
+
+    // count skills with number
+    const counted = skillRef.reduce((count, currentSkill) => {
+      if(typeof count[currentSkill] !== "undefined"){
+        count[currentSkill]++; 
+        return count;
+      } else {
+        count[currentSkill]=1; 
+        return count;
+      }
+    }, {});
+    
+    const skillsArray : any[] = [];
+    for(const skill of Object.keys(counted)) {
+        skillsArray.push(skill + ": " + counted[skill]);
+    }
+
+    // first sort by count and then use localeCompare() to sort alphabetically
+    skillsArray.sort((a: string, b: string) => {
+      return parseInt(b.split(':')[1], 10) - parseInt(a.split(':')[1], 10) || a.localeCompare(b)
+    })
+
+    const tooltipWrapper = 
+      skillsArray.map((resume: any, index: number) => (skillsArray.length > 0) ? <div key={index}>{resume}</div> : <div key={index}/>)
 
     return this.props.disabled ? skillCore : (
-      <Tooltip title={skillRef} placement="bottom" disableHoverListener open={this.state.tooltipOpen}>
+      <Tooltip title={<React.Fragment>{tooltipWrapper}</React.Fragment>} placement="bottom" disableHoverListener open={this.state.tooltipOpen}>
         {skillCore}
       </Tooltip>
     )
