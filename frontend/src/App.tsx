@@ -8,25 +8,39 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import ResumeInput from './scenes/resumeInput';
-import ReferenceList from './scenes/resumeReference';
+import ResumeReferenceList from './scenes/resumeReference';
 // import Typography from '@material-ui/core/Typography';
 
 interface IMainState {
-  data: {}
+  targetPosition: string | null
+  resumeReferences: object
 }
 
 class App extends React.Component<{}, IMainState> {
 
+  constructor(props: any){
+    super(props);
+    this.state = {
+      resumeReferences: [],
+      targetPosition: ''
+    };
+    this.handleTargetPosition = this.handleTargetPosition.bind(this);
+  }
+
   public handleTargetPosition(event: React.FocusEvent<HTMLInputElement>) { // this is the function being passed into the child
     console.log(event.currentTarget.value)
+    this.setState({
+      targetPosition: event.currentTarget.value
+    })
     axios.get('/api/getResumeReference', {
       params: {
         targetPosition: event.currentTarget.value
       }
     }).then(res => {
       console.log(res)
-      // const persons = res.data;
-      // this.setState({ persons });
+      this.setState({
+        resumeReferences: res.data.data.resumes
+      })
     })
   }
 
@@ -36,7 +50,8 @@ class App extends React.Component<{}, IMainState> {
         backgroundImage: 'linear-gradient(to right, #2b5876 0%, #4e4376 100%)'
       },
       contentPage: {
-        display: 'flex'
+        display: 'flex',
+        height: 'calc(100% - 64px)'
       }
     }
     return (
@@ -53,8 +68,8 @@ class App extends React.Component<{}, IMainState> {
           </Toolbar>
         </AppBar>
         <div style={style.contentPage}>
-          <ReferenceList />
-          <ResumeInput onTargetPositionInput={this.handleTargetPosition}/>
+          <ResumeReferenceList targetPosition={this.state.targetPosition} resumeReferences={this.state.resumeReferences}/>
+          <ResumeInput targetPosition={this.state.targetPosition} onTargetPositionInput={this.handleTargetPosition} resumeReferences={this.state.resumeReferences}/>
         </div>
       </div>
     );

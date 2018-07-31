@@ -13,6 +13,9 @@ class ReferenceItem extends React.Component<IProps> {
 
   public render() {
     const styles = {
+      item: {
+        paddingBottom: '10px',
+      },
       bullet: {
         display: 'inline-block',
         margin: '0 2px',
@@ -31,7 +34,7 @@ class ReferenceItem extends React.Component<IProps> {
     };
     const bull = <span style={styles.bullet}>•</span>;
     return (
-      <div>
+      <div style={styles.item}>
         <Card style={styles.card}>
           <CardContent>
             <Typography style={styles.title} color="textSecondary">
