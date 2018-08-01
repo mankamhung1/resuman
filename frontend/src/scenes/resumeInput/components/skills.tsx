@@ -2,6 +2,7 @@ import { FormControl, Tooltip } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import BuildIcon from '@material-ui/icons/Build';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
 import * as React from 'react';
 import {style} from './components.css.js';
 
@@ -68,7 +69,7 @@ class Skills extends React.Component<ISkillsInputProps, ISkillsInputState> {
       }
     }, {});
     
-    const skillsArray : any[] = [];
+    const skillsArray : string[] = [];
     for(const skill of Object.keys(counted)) {
         skillsArray.push(skill + ": " + counted[skill]);
     }
@@ -78,8 +79,41 @@ class Skills extends React.Component<ISkillsInputProps, ISkillsInputState> {
       return parseInt(b.split(':')[1], 10) - parseInt(a.split(':')[1], 10) || a.localeCompare(b)
     })
 
+    // render the whatshot icon and create the colors of the ranks
+    const hotCount : number[] = []
+    const rankColor : string[] = ['red', 'orange', 'yellow']
+    const rankIcon : any[] = [<WhatshotIcon key={1}/>, <WhatshotIcon key={2}/>, <WhatshotIcon key={3}/>]
+    const rankLogic = (skill: string, index: number, logic: any[]) => {
+      const currentSkillCount = parseInt(skill.split(':')[1], 10)
+      if (index === 0 && hotCount.length === 0) {   // as this function would be run more than 1 time, check if hotCount.length === 0
+        hotCount.push(currentSkillCount)
+        return logic[0]
+      } else if (currentSkillCount === hotCount[0]) {
+        return logic[0]
+      } else if (hotCount.length === 1) {
+        hotCount.push(currentSkillCount)
+        return logic[1]
+      } else if (currentSkillCount === hotCount[1]) {
+        return logic[1]
+      } else if (hotCount.length === 2) {
+        hotCount.push(currentSkillCount)
+        return logic[2]
+      } else if (currentSkillCount === hotCount[2]) {
+        return logic[2]
+      } else {
+        return null 
+      }
+    }
+
     const tooltipWrapper = 
-      skillsArray.map((resume: any, index: number) => (skillsArray.length > 0) ? <div key={index}>{resume}</div> : <div key={index}/>)
+      skillsArray.map((skill: any, index: number) => (
+        skillsArray.length > 0 && index <= 50) ? 
+        <div key={index} style={{color: rankLogic(skill, index, rankColor), display: 'flex', alignItems: 'center'}}> 
+          {rankLogic(skill, index, rankIcon)} 
+          <span>{skill}</span>
+        </div> : 
+        <div key={index}/>
+      )
 
     return this.props.disabled ? skillCore : (
       <Tooltip title={<React.Fragment>{tooltipWrapper}</React.Fragment>} placement="bottom" disableHoverListener open={this.state.tooltipOpen}>
