@@ -1,4 +1,4 @@
-import { FormControl, Tooltip } from '@material-ui/core';
+import { CircularProgress, FormControl, Tooltip } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import BuildIcon from '@material-ui/icons/Build';
@@ -8,7 +8,8 @@ import {style} from './components.css.js';
 
 interface ISkillsInputProps {
   disabled: boolean,
-  resumeReferences: object | any
+  resumeReferences: object | any,
+  isLoading: boolean
 }
 
 interface ISkillsInputState {
@@ -82,6 +83,7 @@ class Skills extends React.Component<ISkillsInputProps, ISkillsInputState> {
     // render the whatshot icon and create the colors of the ranks
     const hotCount : number[] = []
     const rankColor : string[] = ['red', 'orange', 'yellow']
+    const rankSize : string[] = ['18px', '16px', '14px']
     const rankIcon : any[] = [<WhatshotIcon key={1}/>, <WhatshotIcon key={2}/>, <WhatshotIcon key={3}/>]
     const rankLogic = (skill: string, index: number, logic: any[]) => {
       const currentSkillCount = parseInt(skill.split(':')[1], 10)
@@ -105,18 +107,20 @@ class Skills extends React.Component<ISkillsInputProps, ISkillsInputState> {
       }
     }
 
-    const tooltipWrapper = 
-      skillsArray.map((skill: any, index: number) => (
-        skillsArray.length > 0 && index <= 50) ? 
-        <div key={index} style={{color: rankLogic(skill, index, rankColor), display: 'flex', alignItems: 'center'}}> 
-          {rankLogic(skill, index, rankIcon)} 
-          <span>{skill}</span>
-        </div> : 
-        <div key={index}/>
-      )
+    const tooltipContent = 
+      this.props.isLoading ? 
+        <CircularProgress style={{ color: '#2b5876', margin: '15px' }} thickness={7} /> : 
+        skillsArray.map((skill: any, index: number) => (
+          skillsArray.length > 0 && index <= 50) ? 
+          <div key={index} style={{color: rankLogic(skill, index, rankColor), fontSize: rankLogic(skill, index, rankSize), display: 'flex', alignItems: 'center', margin: '5px 0'}}> 
+            {rankLogic(skill, index, rankIcon)} 
+            <span>{skill}</span>
+          </div> : 
+          <div key={index}/>
+        )
 
     return this.props.disabled ? skillCore : (
-      <Tooltip title={<React.Fragment>{tooltipWrapper}</React.Fragment>} placement="bottom" disableHoverListener open={this.state.tooltipOpen}>
+      <Tooltip title={<div style={{maxHeight: '50vh', overflowY: 'scroll'}}>{tooltipContent}</div>} placement="bottom" disableHoverListener open={this.state.tooltipOpen}>
         {skillCore}
       </Tooltip>
     )

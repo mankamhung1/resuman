@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CircularProgress } from '../../../node_modules/@material-ui/core';
 import ReferenceItem from './components/referenceItem';
 
 const style = { // style in tsx can avoid class names miss-used issues by other components, it acts like scoped css
@@ -30,6 +31,7 @@ const style = { // style in tsx can avoid class names miss-used issues by other 
 interface IResumeReferenceProps {
   targetPosition: string | null
   resumeReferences: object | any
+  isLoading: boolean
 }
 
 class ResumeReferenceList extends React.Component<IResumeReferenceProps> {
@@ -38,14 +40,16 @@ class ResumeReferenceList extends React.Component<IResumeReferenceProps> {
     return (
       <div style={this.props.targetPosition ? style.mainWithInput : style.mainNoInput}>
         {this.props.targetPosition ? 
-          <div>
-            <div style={style.mainWithInput.title}>
-              <span style={{color: 'grey'}}>Resumes Reference for: </span>
-              <div>{this.props.targetPosition}</div>
-            </div>
-            {this.props.resumeReferences.map((resume: object, index: number) => <ReferenceItem data={resume} key={index}/>)}
-          </div> : 
-          <div style={style.header}>Input your target position to get resume references.</div>
+          (this.props.isLoading ? 
+            <CircularProgress style={{ color: '#2b5876' }} thickness={7} /> :
+            <div>
+              <div style={style.mainWithInput.title}>
+                <span style={{color: 'grey'}}>Resumes Reference for: </span>
+                <div>{this.props.targetPosition}</div>
+              </div>
+              {this.props.resumeReferences.map((resume: object, index: number) => <ReferenceItem data={resume} key={index}/>)}
+            </div>) : 
+        <div style={style.header}>Input your target position to get resume references.</div>
         }
       </div>  
     )

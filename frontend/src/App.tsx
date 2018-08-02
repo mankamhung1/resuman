@@ -1,3 +1,4 @@
+// 'Skill' component in 'resumeInput' is not using Redux because of the purpose of practice, though Redux is helpful in this case. Redux would be used in other components.
 import axios from 'axios';
 import * as React from 'react';
 import './App.css';
@@ -9,11 +10,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
 import ResumeInput from './scenes/resumeInput';
 import ResumeReferenceList from './scenes/resumeReference';
-// import Typography from '@material-ui/core/Typography';
 
 interface IMainState {
   targetPosition: string | null
   resumeReferences: object
+  isRefListLoading: boolean
 }
 
 class App extends React.Component<{}, IMainState> {
@@ -22,7 +23,8 @@ class App extends React.Component<{}, IMainState> {
     super(props);
     this.state = {
       resumeReferences: [],
-      targetPosition: ''
+      targetPosition: '',
+      isRefListLoading: false
     };
     this.handleTargetPosition = this.handleTargetPosition.bind(this);
   }
@@ -30,7 +32,8 @@ class App extends React.Component<{}, IMainState> {
   public handleTargetPosition(event: React.FocusEvent<HTMLInputElement>) { // this is the function being passed into the child
     console.log(event.currentTarget.value)
     this.setState({
-      targetPosition: event.currentTarget.value
+      targetPosition: event.currentTarget.value,
+      isRefListLoading: true
     })
     axios.get('/api/getResumeReference', {
       params: {
@@ -39,7 +42,8 @@ class App extends React.Component<{}, IMainState> {
     }).then(res => {
       console.log(res)
       this.setState({
-        resumeReferences: res.data.data.resumes
+        resumeReferences: res.data.data.resumes,
+        isRefListLoading: false
       })
     })
   }
@@ -68,8 +72,8 @@ class App extends React.Component<{}, IMainState> {
           </Toolbar>
         </AppBar>
         <div style={style.contentPage}>
-          <ResumeReferenceList targetPosition={this.state.targetPosition} resumeReferences={this.state.resumeReferences}/>
-          <ResumeInput targetPosition={this.state.targetPosition} onTargetPositionInput={this.handleTargetPosition} resumeReferences={this.state.resumeReferences}/>
+          <ResumeReferenceList targetPosition={this.state.targetPosition} resumeReferences={this.state.resumeReferences} isLoading={this.state.isRefListLoading}/>
+          <ResumeInput targetPosition={this.state.targetPosition} onTargetPositionInput={this.handleTargetPosition} resumeReferences={this.state.resumeReferences} isLoading={this.state.isRefListLoading}/>
         </div>
       </div>
     );
