@@ -4,10 +4,10 @@ import * as React from 'react';
 import './App.css';
 
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import MenuIcon from '@material-ui/icons/Menu';
+import FacebookLogin, { ReactFacebookLoginInfo } from 'react-facebook-login';
 import ResumeInput from './scenes/resumeInput';
 import ResumeReferenceList from './scenes/resumeReference';
 
@@ -48,6 +48,17 @@ class App extends React.Component<{}, IMainState> {
     })
   }
 
+  public componentClicked() {
+    return null;
+  }
+
+  public responseFacebook = (userInfo: ReactFacebookLoginInfo & { accessToken: string }) => {
+    if (userInfo.accessToken) {
+      // this.props.loginFacebook(userInfo.accessToken);
+    }
+    return null;
+  }
+
   public render() {
     const style = {
       appBar: {
@@ -67,7 +78,15 @@ class App extends React.Component<{}, IMainState> {
             </IconButton>
             <div className="app-bar-flex">
               <div>Resuman</div>
-              <Button color="inherit">Login</Button>
+              <FacebookLogin
+                appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
+                autoLoad={true}
+                fields="name,email,picture"
+                onClick={this.componentClicked}
+                callback={this.responseFacebook}
+                cssClass="facebook-login-button"
+                icon="fa-facebook-square"
+              />
             </div>
           </Toolbar>
         </AppBar>
