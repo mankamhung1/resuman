@@ -5,11 +5,11 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 
-interface IProps {
+interface Props {
   data: {}
 }
 
-class ReferenceItem extends React.Component<IProps> {
+class ReferenceItem extends React.Component<Props> {
 
   public render() {
     const styles = {

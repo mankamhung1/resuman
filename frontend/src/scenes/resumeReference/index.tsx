@@ -1,5 +1,5 @@
+import { CircularProgress } from '@material-ui/core';
 import * as React from 'react';
-import { CircularProgress } from '../../../node_modules/@material-ui/core';
 import ReferenceItem from './components/referenceItem';
 
 const style = { // style in tsx can avoid class names miss-used issues by other components, it acts like scoped css
@@ -28,13 +28,13 @@ const style = { // style in tsx can avoid class names miss-used issues by other 
   }
 } 
 
-interface IResumeReferenceProps {
+interface ResumeReferenceProps {
   targetPosition: string | null
   resumeReferences: object | any
   isLoading: boolean
 }
 
-class ResumeReferenceList extends React.Component<IResumeReferenceProps> {
+class ResumeReferenceList extends React.Component<ResumeReferenceProps> {
 
   public render() {
     return (

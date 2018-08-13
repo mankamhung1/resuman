@@ -5,11 +5,11 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import * as React from 'react';
 import {style} from './components.css.js';
 
-interface ITargetPositionInputProps {
+interface TargetPositionInputProps {
   onInput: (event : React.FocusEvent<HTMLDivElement> | React.FocusEvent<HTMLInputElement>) => void
 }
 
-class TargetPosition extends React.Component<ITargetPositionInputProps> {
+class TargetPosition extends React.Component<TargetPositionInputProps> {
 
   public render() {
     return (

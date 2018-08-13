@@ -3,14 +3,14 @@ import Skills from './components/skills';
 import TargetPosition from './components/targetPosition';
 import {style} from './index.css';
 
-interface IResumeInputProps {
+interface ResumeInputProps {
   onTargetPositionInput: (event : React.FocusEvent<HTMLDivElement> | React.FocusEvent<HTMLInputElement>) => void,
   targetPosition: string | null,
   resumeReferences: object | any,
   isLoading: boolean
 }
 
-class ResumeInput extends React.Component<IResumeInputProps> {
+class ResumeInput extends React.Component<ResumeInputProps> {
 
   public render() {
     return (

@@ -3,21 +3,19 @@ import axios from 'axios';
 import * as React from 'react';
 import './App.css';
 
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import MenuIcon from '@material-ui/icons/Menu';
-import FacebookLogin, { ReactFacebookLoginInfo } from 'react-facebook-login';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import {ApplicationBar} from './scenes/appBar';
 import ResumeInput from './scenes/resumeInput';
 import ResumeReferenceList from './scenes/resumeReference';
 
-interface IMainState {
+interface MainState {
   targetPosition: string | null
   resumeReferences: object
   isRefListLoading: boolean
 }
 
-class App extends React.Component<{}, IMainState> {
+class App extends React.Component<{},MainState> {
 
   constructor(props: any){
     super(props);
@@ -48,53 +46,23 @@ class App extends React.Component<{}, IMainState> {
     })
   }
 
-  public componentClicked() {
-    return null;
-  }
-
-  public responseFacebook = (userInfo: ReactFacebookLoginInfo & { accessToken: string }) => {
-    if (userInfo.accessToken) {
-      // this.props.loginFacebook(userInfo.accessToken);
-    }
-    return null;
-  }
-
   public render() {
     const style = {
-      appBar: {
-        backgroundImage: 'linear-gradient(to right, #2b5876 0%, #4e4376 100%)'
-      },
       contentPage: {
         display: 'flex',
         height: 'calc(100% - 64px)'
       }
     }
     return (
-      <div className="App">
-        <AppBar style={style.appBar} position="static">
-          <Toolbar>
-            <IconButton aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <div className="app-bar-flex">
-              <div>Resuman</div>
-              <FacebookLogin
-                appId={process.env.REACT_APP_FACEBOOK_APP_ID || ''}
-                autoLoad={true}
-                fields="name,email,picture"
-                onClick={this.componentClicked}
-                callback={this.responseFacebook}
-                cssClass="facebook-login-button"
-                icon="fa-facebook-square"
-              />
-            </div>
-          </Toolbar>
-        </AppBar>
-        <div style={style.contentPage}>
-          <ResumeReferenceList targetPosition={this.state.targetPosition} resumeReferences={this.state.resumeReferences} isLoading={this.state.isRefListLoading}/>
-          <ResumeInput targetPosition={this.state.targetPosition} onTargetPositionInput={this.handleTargetPosition} resumeReferences={this.state.resumeReferences} isLoading={this.state.isRefListLoading}/>
+      <Provider store={store}>
+        <div className="App">
+          <ApplicationBar/>
+          <div style={style.contentPage}>
+            <ResumeReferenceList targetPosition={this.state.targetPosition} resumeReferences={this.state.resumeReferences} isLoading={this.state.isRefListLoading}/>
+            <ResumeInput targetPosition={this.state.targetPosition} onTargetPositionInput={this.handleTargetPosition} resumeReferences={this.state.resumeReferences} isLoading={this.state.isRefListLoading}/>
+          </div>
         </div>
-      </div>
+      </Provider>
     );
   }
 }

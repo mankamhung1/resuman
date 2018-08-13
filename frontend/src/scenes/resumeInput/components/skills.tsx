@@ -6,19 +6,19 @@ import WhatshotIcon from '@material-ui/icons/Whatshot';
 import * as React from 'react';
 import {style} from './components.css.js';
 
-interface ISkillsInputProps {
+interface SkillsInputProps {
   disabled: boolean,
   resumeReferences: object | any,
   isLoading: boolean
 }
 
-interface ISkillsInputState {
+interface SkillsInputState {
   tooltipOpen: boolean
 }
 
-class Skills extends React.Component<ISkillsInputProps, ISkillsInputState> {
+class Skills extends React.Component<SkillsInputProps, SkillsInputState> {
 
-  public constructor(props: ISkillsInputProps) {
+  public constructor(props: SkillsInputProps) {
     super(props)
     this.state = {
       tooltipOpen: false
