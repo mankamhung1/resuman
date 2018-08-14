@@ -2,6 +2,8 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { StoreEnhancer } from 'redux';
 import thunk from 'redux-thunk';
 import { authReducer as AuthReducer, AuthState } from './auth/reducer';
+import { targetReducer } from './target/reducer';
+
 // import { GroupState, reducer as GroupReducer } from './group/reducer';
 // import { reducer as UserReducer, UserState } from './user/reducer';
 
@@ -23,7 +25,8 @@ export const store = createStore(
   combineReducers({
     // group: GroupReducer,
     // user: UserReducer,
-    auth: AuthReducer
+    auth: AuthReducer,
+    target: targetReducer
   }),
   composeEnhancers(applyMiddleware(thunk))
 );

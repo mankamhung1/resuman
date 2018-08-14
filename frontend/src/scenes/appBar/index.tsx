@@ -5,7 +5,7 @@ import FacebookLogin, { ReactFacebookLoginInfo } from 'react-facebook-login';
 
 import Icon from '@material-ui/core/Icon';
 import { connect } from 'react-redux';
-import { loginFacebook, logOut/*, LoginActions */} from '../../redux/auth/actions';
+import { loginFacebook, logOut} from '../../redux/auth/actions';
 import './index.css'
 
 interface ResumeReferenceProps {
@@ -41,6 +41,7 @@ class TopBar extends React.Component<ResumeReferenceProps> {
         backgroundImage: 'linear-gradient(to right, #2b5876 0%, #4e4376 100%)'
       }
     }
+    console.log(this.props)
     return (
       <AppBar style={style.appBar} position="static">
         <Toolbar>

@@ -5,6 +5,7 @@ import './App.css';
 
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import { updateRefAction, updateTargetAction } from './redux/target/actions';
 import {ApplicationBar} from './scenes/appBar';
 import ResumeInput from './scenes/resumeInput';
 import ResumeReferenceList from './scenes/resumeReference';
@@ -28,21 +29,22 @@ class App extends React.Component<{},MainState> {
   }
 
   public handleTargetPosition(event: React.FocusEvent<HTMLInputElement>) { // this is the function being passed into the child
-    console.log(event.currentTarget.value)
     this.setState({
       targetPosition: event.currentTarget.value,
       isRefListLoading: true
     })
+    store.dispatch(updateTargetAction(event.currentTarget.value)) // update the store with the target position
     axios.get('/api/getResumeReference', {
       params: {
         targetPosition: event.currentTarget.value
-      }
+      }       
     }).then(res => {
       console.log(res)
       this.setState({
         resumeReferences: res.data.data.resumes,
         isRefListLoading: false
       })
+      store.dispatch(updateRefAction(res.data.data.resumes)) // update the store with the resumes reference
     })
   }
 
